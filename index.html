@@ -14,23 +14,24 @@
         <link rel="stylesheet" type="text/css" href="https://assets.jwwb.nl/assets/website-rendering/main.fc7da3d449d0e4dd726d.css">
         <link rel="stylesheet" type="text/css" href="https://primary.jwwb.nl/public/z/k/v/temp-cjruyxbsxhxexgxruilh/style.css" id="jw-website-stylesheet">
         <style>
-            .side-by-side-container {
+            .split-section {
                 display: flex;
                 flex-wrap: wrap;
                 align-items: center;
                 gap: 40px;
-                padding: 60px 20px;
+                padding: 80px 20px;
                 max-width: 1200px;
                 margin: 0 auto;
             }
-            .side-column { flex: 1; min-width: 300px; }
-            .kiosk-image {
+            .split-column { flex: 1; min-width: 320px; }
+            .kiosk-img {
                 width: 100%;
-                border-radius: 15px;
-                box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+                border-radius: 20px;
+                box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+                display: block;
             }
             @media (max-width: 768px) {
-                .side-by-side-container { flex-direction: column; text-align: center; }
+                .split-section { flex-direction: column; text-align: center; padding: 40px 20px; }
             }
         </style>
     </head>
@@ -58,28 +59,30 @@
                 <div class="jw-strip jw-strip--style-color jw-strip--color-accent jw-strip--padding-both">
                     <div class="jw-strip__content-container">
                         <div class="jw-strip__content jw-responsive" style="text-align: center;">
-                            <h1 class="jw-heading-130">Financial Freedom for Everyone</h1>
-                            <p>Bridging the gap between global trade and local infrastructure.</p>
+                           <h1 class="jw-heading-130">Financial Freedom for Everyone</h1>
+                            <p>Connecting global markets with innovative local infrastructure.</p>
                         </div>
                     </div>
                 </div>
 
-                <section class="side-by-side-container">
-                    <div class="side-column">
-                        <h2 class="jw-heading-100">Our Physical Network</h2>
-                        <h3 class="jw-heading-85" style="color: #4a4a4a;">Zemenpay Kiosks</h3>
-                        <p style="font-size: 1.1em; line-height: 1.7; color: #333;">
-                            Our mission extends beyond the digital realm. Through our smart kiosk network, we provide accessible touchpoints for cash-to-digital transitions, ensuring that every merchant and customer can participate in the global economy.
+                <section class="split-section">
+                    <div class="split-column">
+                        <h2 class="jw-heading-100">The Zemenpay Story</h2>
+                        <p style="font-size: 1.15em; line-height: 1.8; color: #444; margin-bottom: 20px;">
+                            Founded in 2026 by Dubai-based engineers, Zemenpay bridges the gap between digital trade and physical accessibility. We turn payment friction into opportunity for everyone.
                         </p>
-                        <div class="jw-btn-container" style="margin-top: 20px;">
-                            <a href="/solutions" class="jw-btn jw-btn--size-medium">Learn More</a>
+                        <p style="font-size: 1.15em; line-height: 1.8; color: #444;">
+                            Our <strong>Smart Kiosks</strong> represent the next step in our evolution, providing a tangible gateway for cash-to-digital transactions in emerging markets.
+                        </p>
+                        <div class="jw-btn-container" style="margin-top: 30px;">
+                            <a href="/about-us" class="jw-btn jw-btn--size-medium">Read More</a>
                         </div>
                     </div>
-                    <div class="side-column">
-                        <img src="https://primary.jwwb.nl/public/z/k/v/temp-cjruyxbsxhxexgxruilh/zemenpay-kiosk.webp" alt="Zemenpay Kiosk Infrastructure" class="kiosk-image">
+                    <div class="split-column">
+                        <img src="zemenpay-kiosk.webp" alt="Zemenpay Kiosk Infrastructure" class="kiosk-img">
                     </div>
                 </section>
             </main>
         </div>
     </body>
-</html>
+</html>s
