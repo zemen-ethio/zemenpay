@@ -15,27 +15,34 @@
         <link rel="stylesheet" type="text/css" href="https://primary.jwwb.nl/public/z/k/v/temp-cjruyxbsxhxexgxruilh/style.css" id="jw-website-stylesheet">
         <style>
             /* Ticker Wrapper Styles */
-            .ticker-wrap {
-                width: 100%;
-                overflow: hidden;
-                background-color:  #3B5998; /* Professional facebook dark blue background */
-                padding: 10px 0;
-                white-space: nowrap;
-                position: relative;
-            }
+           .ticker-wrapper {
+            background-color: var(--fb-blue-darker);
+            overflow: hidden;
+            white-space: nowrap;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--white-transparent);
+            position: relative;
+            z-index: 100;
+                }
             .ticker-content {
                 display: inline-block;
                 padding-left: 100%;
                 animation: ticker-loop 25s linear infinite;
             }
             .ticker-item {
-                display: inline-block;
-                padding: 0 50px;
-                font-size: 1.1em;
-                font-weight: bold;
-                color: #FFFFFF;
-                text-transform: lowercase;
-                letter-spacing: 1px;
+            display: inline-block;
+            margin: 0 30px;
+            font-size: 1rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+                }
+
+            .ticker-item::before {
+            content: "✦";
+            margin-right: 12px;
+            color: var(--pure-white);
+            }
+
             }
             @keyframes ticker-loop {
                 0% { transform: translate3d(0, 0, 0); }
