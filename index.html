@@ -14,6 +14,35 @@
         <link rel="stylesheet" type="text/css" href="https://assets.jwwb.nl/assets/website-rendering/main.fc7da3d449d0e4dd726d.css">
         <link rel="stylesheet" type="text/css" href="https://primary.jwwb.nl/public/z/k/v/temp-cjruyxbsxhxexgxruilh/style.css" id="jw-website-stylesheet">
         <style>
+            /* Ticker Wrapper Styles */
+            .ticker-wrap {
+                width: 100%;
+                overflow: hidden;
+                background-color: #000; /* Professional black background */
+                padding: 10px 0;
+                white-space: nowrap;
+                position: relative;
+            }
+            .ticker-content {
+                display: inline-block;
+                padding-left: 100%;
+                animation: ticker-loop 25s linear infinite;
+            }
+            .ticker-item {
+                display: inline-block;
+                padding: 0 50px;
+                font-size: 1.1em;
+                font-weight: bold;
+                color: #fff;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
+            @keyframes ticker-loop {
+                0% { transform: translate3d(0, 0, 0); }
+                100% { transform: translate3d(-100%, 0, 0); }
+            }
+
+            /* Split Section Styles */
             .split-section {
                 display: flex;
                 flex-wrap: wrap;
@@ -39,6 +68,16 @@
         </style>
     </head>
     <body id="top" class="jw-is-no-slideshow jw-header-is-text jw-is-segment-page jw-is-frontend jw-is-no-sidebar" data-template-name="general|clean|blanco">
+        
+        <div class="ticker-wrap">
+            <div class="ticker-content">
+                <div class="ticker-item">Financial Freedom for Everyone!!</div>
+                <div class="ticker-item">Financial Freedom for Everyone!!</div>
+                <div class="ticker-item">Financial Freedom for Everyone!!</div>
+                <div class="ticker-item">Financial Freedom for Everyone!!</div>
+            </div>
+        </div>
+
         <div class="jw-body">
             <header class="block-header js-topbar-content-container">
                 <div class="block-header__inner">
