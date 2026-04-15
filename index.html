@@ -18,8 +18,8 @@
                 display: flex;
                 flex-wrap: wrap;
                 align-items: center;
-                gap: 40px;
-                padding: 80px 20px;
+                gap: 50px;
+                padding: 60px 20px;
                 max-width: 1200px;
                 margin: 0 auto;
             }
@@ -27,11 +27,14 @@
             .kiosk-img {
                 width: 100%;
                 border-radius: 20px;
-                box-shadow: 0 15px 35px rgba(0,0,0,0.12);
-                display: block;
+                box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            }
+            .story-block {
+                background: #f9f9f9;
+                padding: 60px 20px;
             }
             @media (max-width: 768px) {
-                .split-section { flex-direction: column; text-align: center; padding: 40px 20px; }
+                .split-section { flex-direction: column-reverse; text-align: center; }
             }
         </style>
     </head>
@@ -56,33 +59,32 @@
             </header>
 
             <main class="main-content">
-                <div class="jw-strip jw-strip--style-color jw-strip--color-accent jw-strip--padding-both">
-                    <div class="jw-strip__content-container">
-                        <div class="jw-strip__content jw-responsive" style="text-align: center;">
-                           <h1 class="jw-heading-130">Financial Freedom for Everyone</h1>
-                            <p>Connecting global markets with innovative local infrastructure.</p>
-                        </div>
-                    </div>
-                </div>
-
                 <section class="split-section">
-                    <div class="split-column">
-                        <h2 class="jw-heading-100">The Zemenpay Story</h2>
-                        <p style="font-size: 1.15em; line-height: 1.8; color: #444; margin-bottom: 20px;">
-                            Founded in 2026 by Dubai-based engineers, Zemenpay bridges the gap between digital trade and physical accessibility. We turn payment friction into opportunity for everyone.
-                        </p>
-                        <p style="font-size: 1.15em; line-height: 1.8; color: #444;">
-                            Our <strong>Smart Kiosks</strong> represent the next step in our evolution, providing a tangible gateway for cash-to-digital transactions in emerging markets.
-                        </p>
-                        <div class="jw-btn-container" style="margin-top: 30px;">
-                            <a href="/about-us" class="jw-btn jw-btn--size-medium">Read More</a>
-                        </div>
-                    </div>
                     <div class="split-column">
                         <img src="zemenpay-kiosk.webp" alt="Zemenpay Kiosk Infrastructure" class="kiosk-img">
                     </div>
+                    <div class="split-column">
+                        <h1 class="jw-heading-130" style="text-align: left;">Financial Freedom for Everyone</h1>
+                        <p style="font-size: 1.25em; color: #555; line-height: 1.6;">
+                            Connecting global markets with innovative local infrastructure. Our physical touchpoints provide the essential link for seamless cash-to-digital transitions.
+                        </p>
+                        <div class="jw-btn-container" style="margin-top: 25px;">
+                            <a href="/services" class="jw-btn jw-btn--size-medium">Explore Our Infrastructure</a>
+                        </div>
+                    </div>
                 </section>
+
+                <div class="story-block">
+                    <div class="jw-strip__content jw-responsive" style="max-width: 1000px; margin: 0 auto; text-align: center;">
+                        <h2 class="jw-heading-100">The Zemenpay Story</h2>
+                        <p style="font-size: 1.15em; line-height: 1.8; color: #444; margin-top: 20px;">
+                            Founded in 2026, Zemenpay is a premier financial services firm headquartered in the UAE. 
+                            Our journey began with a clear mission: to solve the bottleneck of payment infrastructures in developing economies. 
+                            We turn technical friction into financial freedom.
+                        </p>
+                    </div>
+                </div>
             </main>
         </div>
     </body>
-</html>s
+</html>
