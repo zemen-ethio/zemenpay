@@ -48,6 +48,15 @@
         </style>
     </head>
     <body>
+<style>
+    body { background-color: #1877F2 !important; color: #ffffff !important; }
+    p, h1, h2, h3, h4, span, div { color: #ffffff !important; }
+    .ticker-wrap { width: 100%; overflow: hidden; background-color: #0d47a1; padding: 10px 0; position: sticky; top: 0; z-index: 9999; }
+    .ticker { display: inline-block; white-space: nowrap; padding-right: 100%; animation: ticker-loop 25s linear infinite; }
+    .ticker-item { display: inline-block; padding: 0 50px; font-weight: bold; }
+    @keyframes ticker-loop { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-100%, 0, 0); } }
+</style>
+<div class='ticker-wrap'><div class='ticker'><span class='ticker-item'>ZEMENPAY: TURNING PAYMENT FRICTION INTO FINANCIAL FREEDOM</span><span class='ticker-item'>ZEMENPAY: TURNING PAYMENT FRICTION INTO FINANCIAL FREEDOM</span></div></div>
         <div class="jw-layout">
             <main class="jw-content">
                 
