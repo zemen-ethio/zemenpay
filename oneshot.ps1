@@ -1,32 +1,26 @@
-# 1. Define the folder to watch
-$watcher = New-Object System.IO.FileSystemWatcher
-$watcher.Path = "D:\WEBSITE PROJECT\Zemenpay\powershell"
-$watcher.IncludeSubdirectories = $true
-$watcher.EnableRaisingEvents = $true
+# Set the strict working directory
+$targetPath = "D:\WEBSITE PROJECT\Zemenpay\powershell"
+Set-Location -Path $targetPath
 
-Write-Host "Watcher started. Any change saved in $watcher.Path will sync to GitHub instantly..." -ForegroundColor Cyan
+Write-Host "--- Starting One-Click Sync for Zemenpay ---" -ForegroundColor Magenta
 
-# 2. Define the sync action
-$action = {
-    $path = $Event.SourceEventArgs.FullPath
-    $changeType = $Event.SourceEventArgs.ChangeType
-    $timestamp = Get-Date -Format "HH:mm:ss"
-    
-    Write-Host "[$timestamp] Change detected: $changeType in $path" -ForegroundColor Yellow
-    
-    # Navigate, Stage, Commit, and Push
-    cd "D:\WEBSITE PROJECT\Zemenpay\powershell"
-    git add .
-    git commit -m "Auto-sync: $changeType at $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
-    git push origin main
-    
-    Write-Host "[$timestamp] GitHub updated successfully!" -ForegroundColor Green
-}
+# 1. Pull latest to prevent conflicts
+Write-Host "Checking for remote updates..." -ForegroundColor Yellow
+git pull origin main
 
-# 3. Register the events (Created, Changed, Deleted)
-Register-ObjectEvent $watcher "Created" -Action $action
-Register-ObjectEvent $watcher "Changed" -Action $action
-Register-ObjectEvent $watcher "Deleted" -Action $action
+# 2. Stage all changes in the powershell folder
+Write-Host "Staging files..." -ForegroundColor Yellow
+git add .
 
-# Keep the session alive
-while ($true) { Start-Sleep 5 }
+# 3. Commit with current timestamp
+$dt = Get-Date -Format "dd-MMM-yyyy HH:mm"
+$msg = "One-Click Update: $dt"
+Write-Host "Committing: $msg" -ForegroundColor Cyan
+git commit -m $msg
+
+# 4. Push to GitHub
+Write-Host "Pushing to GitHub..." -ForegroundColor Green
+git push origin main
+
+Write-Host "--- Sync Complete! Closing in 5 seconds ---" -ForegroundColor Green
+Start-Sleep -Seconds 5
