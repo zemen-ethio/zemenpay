@@ -1,62 +1,76 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <link rel="canonical" href="https://zpay.resonwave.com/developers">
-        <link rel="sitemap" type="application/xml" href="https://zpay.resonwave.com/sitemap.xml">
-        <meta property='og:title' content='Zemenpay'>
-        <meta property="og:url" content="https://zpay.resonwave.com/developers">
-        <base href="https://zpay.resonwave.com/">
-        <script nonce="40ec3a2d22ea5c8ae2ecf2e108d21633">
-            window.JOUWWEB = window.JOUWWEB || {};
-            window.JOUWWEB.application = window.JOUWWEB.application || {};
-        </script>
-        <title>Developers | Zemenpay</title>
-        <link href="https://assets.jwwb.nl/assets/brand/webador/icon/favicon.png" rel="shortcut icon">
-        <link rel="stylesheet" type="text/css" href="https://assets.jwwb.nl/assets/website-rendering/main.fc7da3d449d0e4dd726d.css">
-        <link rel="stylesheet" type="text/css" href="https://primary.jwwb.nl/public/z/k/v/temp-cjruyxbsxhxexgxruilh/style.css" id="jw-website-stylesheet">
-    </head>
-    <body id="top" class="jw-is-no-slideshow jw-header-is-text jw-is-segment-page jw-is-frontend jw-is-no-sidebar" data-template-name="general|clean|blanco">
-    <div style="position: fixed; top: 10px; left: 10px; z-index: 1000;">
-        <img src="https://primary.jwwb.nl/public/z/k/v/temp-cjruyxbsxhxexgxruilh/zpay-logo-small-high.png" alt="Zemenpay Logo" style="height: 60px; width: auto;">
-    </div>
-        <div class="jw-body">
-            <header class="block-header js-topbar-content-container">
-                <div class="block-header__inner">
-                    <div class="block-header__brand">
-                        <div class="jw-header-logo">
-                            <a id="jw-header-title" class="jw-header-title" href="/">Zemenpay</a>
-                        </div>
-                    </div>
-                    <nav class="block-header__menu">
-                        <ul id="jw-menu" class="jw-menu jw-menu-horizontal">
-                            <li class="jw-menu-item"><a class="jw-menu-link" href="/"><span>Home</span></a></li>
-                            <li class="jw-menu-item"><a class="jw-menu-link" href="/about-us"><span>About Us</span></a></li>
-                            <li class="jw-menu-item"><a class="jw-menu-link" href="/services"><span>Services</span></a></li>
-                            <li class="jw-menu-item"><a class="jw-menu-link" href="/solutions"><span>Solutions</span></a></li>
-                            <li class="jw-menu-item jw-menu-is-active"><a class="jw-menu-link js-active-menu-item" href="/developers"><span>Developers</span></a></li>
-                            <li class="jw-menu-item"><a class="jw-menu-link" href="/payment"><span>Payment</span></a></li>
-                        </ul>
-                    </nav>
-                </div>
-            </header>
-            <div class="main-content">
-                <main id="main-content" class="block-content">
-                    <div class="jw-section jw-responsive">
-                        <div class="jw-strip jw-strip--narrow jw-strip--style-color jw-strip--color-accent jw-strip--padding-both jw-strip--primary">
-                            <div class="jw-strip__content-container">
-                                <div class="jw-strip__content jw-responsive">
-                                    <h1 class="jw-heading-130" style="text-align: left;">Developer Hub</h1>
-                                    <p style="text-align: center;">Experience the "Aha!" moment. See how quickly you can go from business requirements to a production-ready global payment setup.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </main>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Developers | Zemenpay</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <style>
+        /* Same frame as solutions.html */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #fff; color: #111; line-height: 1.5; }
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+        .btn { display: inline-block; padding: 14px 32px; border-radius: 60px; font-weight: 600; text-decoration: none; background: #00e5a0; color: #000; }
+        .btn:hover { background: #00c78a; }
+        .header { position: sticky; top: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(8px); z-index: 100; padding: 16px 0; }
+        .header .container { display: flex; justify-content: space-between; align-items: center; }
+        .logo img { height: 50px; }
+        .nav-links a { color: #fff; text-decoration: none; margin-left: 32px; font-weight: 500; }
+        .nav-links a:hover, .nav-links a.active { color: #f5c542; }
+        .page-hero { background: linear-gradient(135deg, #0a0a1a, #1a0b2e); color: white; padding: 80px 0; text-align: center; }
+        .page-hero h1 { font-size: 3rem; margin-bottom: 20px; }
+        .dev-content { padding: 80px 0; text-align: center; }
+        .api-features { display: flex; flex-wrap: wrap; gap: 30px; justify-content: center; margin-top: 50px; }
+        .api-card { background: #f8f9fc; border-radius: 24px; padding: 30px; width: 280px; }
+        .footer { background: #111; color: #ccc; padding: 60px 0 30px; margin-top: 60px; }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 40px; margin-bottom: 50px; }
+        .footer-col h4 { color: #ff3b7f; margin-bottom: 20px; }
+        .footer-col a { display: block; color: #aaa; text-decoration: none; margin-bottom: 12px; }
+        .copyright { text-align: center; border-top: 1px solid #2a2a2a; padding-top: 30px; }
+        @media (max-width: 768px) { .nav-links { display: none; } }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo"><img src="zpay-logo-small-high.png" alt="Zemenpay Logo"></div>
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="/about-us">About Us</a>
+                <a href="/services">Services</a>
+                <a href="/solutions">Solutions</a>
+                <a href="/developers" class="active">Developers</a>
+                <a href="/payment">Payment</a>
             </div>
         </div>
-    </body>
-</html>
+    </header>
 
+    <section class="page-hero">
+        <div class="container">
+            <h1>Developer Hub</h1>
+            <p>Experience the "Aha!" moment. See how quickly you can go from business requirements to a production-ready global payment setup.</p>
+            <div style="margin-top: 30px;"><a href="#" class="btn">View API Docs</a></div>
+        </div>
+    </section>
+
+    <div class="dev-content container">
+        <h2>Build with Zemenpay</h2>
+        <p style="max-width: 700px; margin: 20px auto;">RESTful APIs, webhooks, and client libraries in Python, Node, Java, and PHP. Sandbox environment included.</p>
+        <div class="api-features">
+            <div class="api-card"><h3>⚡️ Instant integration</h3><p>Go live in hours, not weeks.</p></div>
+            <div class="api-card"><h3>🔐 Enterprise security</h3><p>PCI DSS Level 1 compliant.</p></div>
+            <div class="api-card"><h3>🌍 Global methods</h3><p>100+ payment methods out of the box.</p></div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col"><h4>Developers</h4><a href="#">Documentation</a><a href="#">API Reference</a><a href="#">Status</a></div>
+                <div class="footer-col"><h4>Support</h4><a href="#">Contact</a><a href="#">Community</a></div>
+            </div>
+            <div class="copyright">© 2026 Zemenpay. All rights reserved.</div>
+        </div>
+    </footer>
+</body>
+</html>
