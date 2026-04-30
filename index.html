@@ -24,13 +24,8 @@
             padding: 0 24px;
         }
         .text-center { text-align: center; }
-        .text-white { color: #fff; }
-        .bg-black { background: #000; }
-        .bg-purple { background: #5e2eff; }
-        .bg-pink { background: #ff3b7f; }
-        .bg-green { background: #00e5a0; }
-        .bg-yellow { background: #f5c542; }
 
+        /* Buttons & interactive elements */
         .btn {
             display: inline-block;
             padding: 14px 32px;
@@ -39,6 +34,7 @@
             text-decoration: none;
             transition: all 0.2s ease;
             font-size: 1rem;
+            cursor: pointer;
         }
         .btn-primary {
             background: #00e5a0;
@@ -56,9 +52,20 @@
         }
         .btn-outline-light:hover {
             background: rgba(255,255,255,0.1);
+            transform: translateY(-2px);
         }
 
-        /* Header */
+        /* Click animation (movement + color) */
+        .click-effect {
+            animation: clickPulse 0.2s ease-in-out !important;
+        }
+        @keyframes clickPulse {
+            0% { transform: scale(1); background-color: inherit; }
+            50% { transform: scale(0.97); background-color: rgba(255,255,255,0.2); }
+            100% { transform: scale(1); background-color: inherit; }
+        }
+
+        /* Header with blur */
         .header {
             position: sticky;
             top: 0;
@@ -72,25 +79,18 @@
             justify-content: space-between;
             align-items: center;
         }
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #5e2eff, #ff3b7f);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        .logo img {
-            height: 50px;
-            vertical-align: middle;
-        }
+        .logo img { height: 50px; transition: transform 0.2s; }
+        .logo img:active { transform: scale(0.95); }
         .nav-links a {
             color: #fff;
             text-decoration: none;
             margin-left: 32px;
             font-weight: 500;
+            transition: color 0.2s, transform 0.1s;
+            display: inline-block;
         }
-        .nav-links a:hover, .nav-links a.active { color: #f5c542; }
+        .nav-links a:hover { color: #f5c542; transform: translateY(-1px); }
+        .nav-links a:active { transform: scale(0.96); }
 
         /* Hero */
         .hero {
@@ -112,15 +112,27 @@
         }
         .hero-content { max-width: 700px; margin: 0 auto; text-align: center; }
         .hero h1 { font-size: 4rem; font-weight: 800; line-height: 1.2; margin-bottom: 24px; }
-        .hero .accent { background: linear-gradient(120deg, #00e5a0, #f5c542); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .hero .accent {
+            background: linear-gradient(120deg, #00e5a0, #f5c542);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
         .hero p { font-size: 1.25rem; margin-bottom: 32px; opacity: 0.9; }
         .hero-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
 
         /* Logo cloud */
         .logo-cloud { background: #f8f9fc; padding: 48px 0; border-bottom: 1px solid #eee; }
         .logos { display: flex; flex-wrap: wrap; justify-content: center; gap: 48px; align-items: center; }
-        .logos img { height: 32px; filter: grayscale(100%); opacity: 0.6; transition: all 0.2s; }
-        .logos img:hover { filter: none; opacity: 1; }
+        .logos img {
+            height: 32px;
+            filter: grayscale(100%);
+            opacity: 0.6;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .logos img:hover { filter: none; opacity: 1; transform: scale(1.05); }
+        .logos img:active { transform: scale(0.95); }
 
         /* Split section */
         .split-section {
@@ -133,7 +145,14 @@
             margin: 0 auto;
         }
         .split-column { flex: 1; min-width: 280px; }
-        .kiosk-img { width: 100%; border-radius: 24px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); }
+        .kiosk-img {
+            width: 100%;
+            border-radius: 24px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        .kiosk-img:hover { transform: scale(1.02); }
+        .kiosk-img:active { transform: scale(0.98); }
 
         /* Story block */
         .story-block { background: #f9f9f9; padding: 80px 20px; text-align: center; }
@@ -156,8 +175,10 @@
             min-width: 220px;
             box-shadow: 0 20px 30px -12px rgba(0,0,0,0.1);
             transition: all 0.3s;
+            cursor: pointer;
         }
-        .overlap-card:hover { transform: translateY(-8px); }
+        .overlap-card:hover { transform: translateY(-8px); background: #fff; box-shadow: 0 25px 40px -12px #5e2eff30; }
+        .overlap-card:active { transform: scale(0.97); transition: 0.05s; }
         .overlap-card .emoji { font-size: 48px; margin-bottom: 16px; }
         .overlap-card h3 { font-size: 1.5rem; margin-bottom: 12px; }
 
@@ -181,37 +202,113 @@
         }
         @keyframes ticker-loop { 0% { transform: translate3d(0,0,0); } 100% { transform: translate3d(-100%,0,0); } }
 
-        /* Case tabs (for home or other pages) */
+        /* Industries grid */
+        .industries { padding: 100px 0; background: #fff; }
+        .industry-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 24px;
+            margin-top: 48px;
+        }
+        .industry-card {
+            background: #f8f9fc;
+            border-radius: 28px;
+            padding: 28px 20px;
+            transition: all 0.25s;
+            text-align: center;
+            cursor: pointer;
+        }
+        .industry-card:hover {
+            background: #5e2eff;
+            color: white;
+            transform: scale(1.02);
+        }
+        .industry-card:active { transform: scale(0.98); transition: 0.05s; }
+        .industry-card i { font-size: 2rem; margin-bottom: 16px; display: inline-block; }
+
+        /* Case studies (tabs) – movement on click (tab switching) */
         .case-studies { background: #0a0a1a; color: white; padding: 100px 0; }
         .tabs { display: flex; justify-content: center; gap: 24px; margin-bottom: 48px; flex-wrap: wrap; }
-        .tab-btn { background: transparent; border: none; font-size: 1.2rem; font-weight: 600; padding: 10px 20px; cursor: pointer; color: #aaa; border-bottom: 2px solid transparent; transition: 0.2s; }
-        .tab-btn.active { color: #f5c542; border-bottom-color: #f5c542; }
-        .tab-pane { display: none; animation: fadeIn 0.3s; }
-        .tab-pane.active-pane { display: flex; flex-wrap: wrap; gap: 40px; align-items: center; justify-content: center; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px);} to { opacity: 1; transform: translateY(0);} }
+        .tab-btn {
+            background: transparent;
+            border: none;
+            font-size: 1.2rem;
+            font-weight: 600;
+            padding: 10px 20px;
+            cursor: pointer;
+            color: #aaa;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+        .tab-btn:hover { color: #f5c542; transform: translateY(-2px); }
+        .tab-btn:active { transform: scale(0.96); }
+        .tab-btn.active {
+            color: #f5c542;
+            border-bottom-color: #f5c542;
+        }
+        .tab-pane {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        .tab-pane.active-pane {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            align-items: center;
+            justify-content: center;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
         .case-text { max-width: 500px; }
         .case-text h3 { font-size: 2rem; margin-bottom: 16px; color: #f5c542; }
         .case-text blockquote { font-style: italic; border-left: 4px solid #ff3b7f; padding-left: 20px; margin: 20px 0; }
 
-        /* Swiper (carousel) */
+        /* Swiper carousel items */
         .news { padding: 80px 0; background: #fff; }
         .swiper { width: 100%; padding: 20px 0; }
-        .swiper-slide { background: #f8f9fc; border-radius: 24px; padding: 32px; text-align: center; box-shadow: 0 8px 20px rgba(0,0,0,0.05); }
-        .swiper-slide img { height: 60px; margin-bottom: 20px; }
+        .swiper-slide {
+            background: #f8f9fc;
+            border-radius: 24px;
+            padding: 32px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+            cursor: pointer;
+        }
+        .swiper-slide:hover { transform: scale(1.02); background: #fff; }
+        .swiper-slide:active { transform: scale(0.98); }
 
         /* Footer */
         .footer { background: #111; color: #ccc; padding: 60px 0 30px; }
-        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 40px; margin-bottom: 50px; }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 40px;
+            margin-bottom: 50px;
+        }
         .footer-col h4 { color: #ff3b7f; margin-bottom: 20px; font-size: 1.1rem; }
-        .footer-col a { display: block; color: #aaa; text-decoration: none; margin-bottom: 12px; }
-        .footer-col a:hover { color: #fff; }
-        .copyright { text-align: center; border-top: 1px solid #2a2a2a; padding-top: 30px; font-size: 0.85rem; }
+        .footer-col a {
+            display: block;
+            color: #aaa;
+            text-decoration: none;
+            margin-bottom: 12px;
+            transition: color 0.2s, transform 0.1s;
+        }
+        .footer-col a:hover { color: #fff; transform: translateX(3px); }
+        .footer-col a:active { transform: scale(0.98); }
+        .copyright {
+            text-align: center;
+            border-top: 1px solid #2a2a2a;
+            padding-top: 30px;
+            font-size: 0.85rem;
+        }
 
         @media (max-width: 768px) {
             .hero h1 { font-size: 2.5rem; }
-            .nav-links { display: none; } /* consider mobile menu for production */
+            .nav-links { display: none; } /* Add mobile menu if needed */
             .hero-buttons { flex-direction: column; align-items: center; }
-            .split-section { flex-direction: column-reverse; text-align: center; }
         }
     </style>
 </head>
@@ -271,7 +368,7 @@
             <img src="zemenpay-kiosk.webp" alt="Zemenpay Kiosk Infrastructure" class="kiosk-img">
         </div>
         <div class="split-column">
-            <h1 class="jw-heading-130" style="font-size:2.8rem;">Financial Freedom for Everyone</h1>
+            <h1 style="font-size:2.8rem;">Financial Freedom for Everyone</h1>
             <p style="font-size: 1.25em; color: #555; line-height: 1.6;">
                 Connecting global markets with innovative local infrastructure. Our physical touchpoints provide the essential link for seamless cash-to-digital transitions.
             </p>
@@ -293,13 +390,53 @@
         </div>
     </div>
 
-    <!-- Overlap Cards (value props) -->
+    <!-- Overlap Cards (value props) with click movement -->
     <section class="overlap-section">
         <div class="container">
             <div class="overlap-grid">
-                <div class="overlap-card"><div class="emoji">💳</div><h3>High Success Rates</h3><p>Optimized payment routing</p></div>
-                <div class="overlap-card"><div class="emoji">🌍</div><h3>Global Reach</h3><p>Cross-border made easy</p></div>
-                <div class="overlap-card"><div class="emoji">🔒</div><h3>Secure Infrastructure</h3><p>Enterprise-grade security</p></div>
+                <div class="overlap-card clickable-card"><div class="emoji">💳</div><h3>High Success Rates</h3><p>Optimized payment routing</p></div>
+                <div class="overlap-card clickable-card"><div class="emoji">🌍</div><h3>Global Reach</h3><p>Cross-border made easy</p></div>
+                <div class="overlap-card clickable-card"><div class="emoji">🔒</div><h3>Secure Infrastructure</h3><p>Enterprise-grade security</p></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Industries Grid with click animations -->
+    <section class="industries">
+        <div class="container text-center">
+            <h2 style="font-size: 2.8rem;">Expertise across industries</h2>
+            <p style="font-size: 1.2rem; margin-top: 12px;">Tailored solutions for modern business models</p>
+            <div class="industry-items">
+                <div class="industry-card clickable-card"><i>🛒</i><h3>eCommerce</h3><p>Optimized checkout & subscriptions</p></div>
+                <div class="industry-card clickable-card"><i>🎮</i><h3>Gaming</h3><p>Real‑time payouts & virtual wallets</p></div>
+                <div class="industry-card clickable-card"><i>🏪</i><h3>Marketplaces</h3><p>Split payments & escrow</p></div>
+                <div class="industry-card clickable-card"><i>📈</i><h3>Trading</h3><p>Low‑latency settlements</p></div>
+                <div class="industry-card clickable-card"><i>🎨</i><h3>Creator Economy</h3><p>Global payouts for creators</p></div>
+                <div class="industry-card clickable-card"><i>✈️</i><h3>Travel</h3><p>Multi‑currency & BNPL</p></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Case studies tabs (click tabs = movement + color) -->
+    <section class="case-studies">
+        <div class="container">
+            <h2 class="text-center" style="font-size: 2.5rem; margin-bottom: 48px;">Success stories</h2>
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="tab1">Alcaston</button>
+                <button class="tab-btn" data-tab="tab2">GoTrade</button>
+                <button class="tab-btn" data-tab="tab3">Kadmos</button>
+            </div>
+            <div id="tab1" class="tab-pane active-pane">
+                <div class="case-text"><h3>ALCASTON</h3><blockquote>“FintechFlow helped us scale in 15 new markets with local acquiring.”</blockquote><p>- Delfina Toucon, Payments Consultant</p><a href="#" class="btn btn-primary">Read case study →</a></div>
+                <div class="case-img"><img src="https://placehold.co/400x240/e0e0e0/333?text=Case+Image" alt="case"></div>
+            </div>
+            <div id="tab2" class="tab-pane">
+                <div class="case-text"><h3>GOTRADE</h3><blockquote>“Local payment methods increased our transaction volume by 34%.”</blockquote><p>- David Grant, COO</p><a href="#" class="btn btn-primary">Read case study →</a></div>
+                <div class="case-img"><img src="https://placehold.co/400x240/e0e0e0/333?text=Case+Image" alt="case"></div>
+            </div>
+            <div id="tab3" class="tab-pane">
+                <div class="case-text"><h3>KADMOS</h3><blockquote>“Without FintechFlow, our global expansion would have been impossible.”</blockquote><p>- Robyn Walker, Head of Operations</p><a href="#" class="btn btn-primary">Read case study →</a></div>
+                <div class="case-img"><img src="https://placehold.co/400x240/e0e0e0/333?text=Case+Image" alt="case"></div>
             </div>
         </div>
     </section>
@@ -333,9 +470,10 @@
         </div>
     </footer>
 
-    <!-- Scripts -->
+    <!-- Swiper JS and tabs + click effect script -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
+        // Swiper carousel
         const swiper = new Swiper('.mySwiper', {
             slidesPerView: 1,
             spaceBetween: 30,
@@ -343,6 +481,34 @@
             autoplay: { delay: 3000 },
             pagination: { el: '.swiper-pagination', clickable: true },
             breakpoints: { 640: { slidesPerView: 2 }, 1024: { slidesPerView: 3 } }
+        });
+
+        // Tabs functionality (movement on click)
+        const tabs = document.querySelectorAll('.tab-btn');
+        const panes = document.querySelectorAll('.tab-pane');
+        tabs.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const tabId = btn.getAttribute('data-tab');
+                tabs.forEach(b => b.classList.remove('active'));
+                panes.forEach(p => p.classList.remove('active-pane'));
+                btn.classList.add('active');
+                const activePane = document.getElementById(tabId);
+                activePane.classList.add('active-pane');
+                // Add click effect to the tab button
+                btn.classList.add('click-effect');
+                setTimeout(() => btn.classList.remove('click-effect'), 200);
+            });
+        });
+
+        // Add click-effect to all interactive elements (cards, buttons, etc.)
+        const clickables = document.querySelectorAll('.btn, .overlap-card, .industry-card, .swiper-slide, .nav-links a, .logo img, .kiosk-img, .footer-col a');
+        clickables.forEach(el => {
+            el.addEventListener('click', function(e) {
+                // Don't interfere with actual link navigation
+                this.classList.add('click-effect');
+                setTimeout(() => this.classList.remove('click-effect'), 200);
+            });
         });
     </script>
 </body>
