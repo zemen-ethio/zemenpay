@@ -1,9 +1,8 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Live Mereja| Contact Support</title>
+    <title>Live Mereja | Contact Support</title>
     <link rel="stylesheet" href="style.css">
     <style>
         .form-container { max-width: 800px; margin: 40px auto; }
@@ -54,6 +53,12 @@
             font-weight: 700; 
             margin-top: 15px; 
         }
+        .email-error {
+            color: #e74c3c;
+            font-size: 0.8rem;
+            margin-top: 5px;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -80,6 +85,7 @@
                     <div class="form-group">
                         <label>Your Email</label>
                         <input type="email" name="email" id="email_addr" required placeholder="support@zemenpay.com">
+                        <div class="email-error" id="email-error"></div>
                     </div>
 
                     <div class="form-group">
@@ -100,14 +106,136 @@
     </main>
 
     <script>
-        const form = document.getElementById("support-form-element");
-        const status = document.getElementById("status-msg");
+        // ========== EMAIL DOMAIN VALIDATION ==========
+        const emailInput = document.getElementById("email_addr");
+        const emailError = document.getElementById("email-error");
 
-        form.addEventListener("submit", function(event) {
+        // Helper: extract domain from email
+        function getDomainFromEmail(email) {
+            const parts = email.split('@');
+            return parts.length === 2 ? parts[1].toLowerCase() : null;
+        }
+
+        // Helper: check if domain has MX records using Google DNS API
+        async function domainHasMX(domain) {
+            try {
+                const url = `https://dns.google/resolve?name=${encodeURIComponent(domain)}&type=MX`;
+                const response = await fetch(url);
+                const data = await response.json();
+                // If MX records exist, the domain can receive email
+                return data.Answer && data.Answer.some(record => record.type === 15);
+            } catch (err) {
+                console.warn("DNS check failed:", err);
+                return false;
+            }
+        }
+
+        // Common typos for popular domains
+        const commonTypos = {
+            "gmil.com": "gmail.com",
+            "hotmal.com": "hotmail.com",
+            "yaho.com": "yahoo.com",
+            "outlok.com": "outlook.com",
+            "protonmai.com": "protonmail.com",
+            "gmai.com": "gmail.com",
+            "gmail.co": "gmail.com",
+            "hotmial.com": "hotmail.com",
+            "yahooo.com": "yahoo.com",
+            "yhaoo.com": "yahoo.com"
+        };
+
+        // Show error message
+        function showEmailError(message) {
+            emailError.textContent = message;
+            emailError.style.display = "block";
+            emailInput.style.borderColor = "#e74c3c";
+        }
+
+        function hideEmailError() {
+            emailError.style.display = "none";
+            emailInput.style.borderColor = "#eee";
+        }
+
+        // Main validation function
+        async function validateEmailDomain(email) {
+            hideEmailError();
+            
+            if (!email || email.trim() === "") {
+                showEmailError("Email address is required.");
+                return false;
+            }
+
+            const domain = getDomainFromEmail(email);
+            if (!domain) {
+                showEmailError("Please include an '@' symbol and a valid domain (e.g., name@example.com).");
+                return false;
+            }
+
+            // Check for known typos
+            if (commonTypos[domain]) {
+                showEmailError(`Did you mean @${commonTypos[domain]}?`);
+                return false;
+            }
+
+            // Basic domain format: must contain at least one dot and a valid TLD (e.g., .com, .org)
+            if (!domain.includes('.') || domain.split('.').pop().length < 2) {
+                showEmailError("Please enter a complete domain (e.g., @example.com).");
+                return false;
+            }
+
+            // Show a temporary "checking" message (optional)
+            emailError.textContent = "Checking domain...";
+            emailError.style.display = "block";
+            emailError.style.color = "#0F52BA";
+
+            // Check MX records
+            const hasMX = await domainHasMX(domain);
+            if (!hasMX) {
+                showEmailError("This domain does not appear to accept emails. Please use a working email address.");
+                return false;
+            }
+
+            // Success: clear error
+            hideEmailError();
+            return true;
+        }
+
+        // Real-time validation when user leaves the email field (blur)
+        emailInput.addEventListener("blur", async function() {
+            const email = emailInput.value.trim();
+            if (email === "") {
+                showEmailError("Email address is required.");
+                return;
+            }
+            await validateEmailDomain(email);
+        });
+
+        // Also re-validate on input (clear error when user starts typing)
+        emailInput.addEventListener("input", function() {
+            hideEmailError();
+        });
+
+        // ========== FORM SUBMISSION WITH EMAIL CHECK ==========
+        const form = document.getElementById("support-form-element");
+        const statusMsg = document.getElementById("status-msg");
+
+        form.addEventListener("submit", async function(event) {
             event.preventDefault();
-            status.style.display = "block";
-            status.style.color = "#0F52BA";
-            status.innerHTML = "Processing Ticket...";
+            
+            // First, validate the email domain again
+            const email = emailInput.value.trim();
+            const isEmailValid = await validateEmailDomain(email);
+            if (!isEmailValid) {
+                statusMsg.style.display = "block";
+                statusMsg.style.color = "red";
+                statusMsg.innerHTML = "Please correct the email address before submitting.";
+                return;
+            }
+
+            // Proceed with submission
+            statusMsg.style.display = "block";
+            statusMsg.style.color = "#0F52BA";
+            statusMsg.innerHTML = "Processing Ticket...";
 
             const data = new FormData(form);
 
@@ -116,27 +244,18 @@
                 body: data,
                 headers: { 'Accept': 'application/json' }
             }).then(response => {
-			// Find this section in your contact.html
-
-    if (response.ok) {
-        // CHANGE THIS LINE:
-        // From: window.location.href = "https://www.resonwave.com/thank-you.html";
-        // To your local Live Mereja thank-you page:
-        window.location.href = "thank-you.html"; 
-    } else {
-        status.style.color = "red";
-        status.innerHTML = "Oops! Submission failed. Please try again.";
-    }
-}).catch(error => {
-	        
-                status.style.color = "red";
-                status.innerHTML = "Connection error. Please check your network.";
+                if (response.ok) {
+                    window.location.href = "thank-you.html";
+                } else {
+                    statusMsg.style.color = "red";
+                    statusMsg.innerHTML = "Oops! Submission failed. Please try again.";
+                }
+            }).catch(error => {
+                statusMsg.style.color = "red";
+                statusMsg.innerHTML = "Connection error. Please check your network.";
             });
         });
     </script>
-	<footer>&copy; 2026 zemenpay</footer>
+    <footer>&copy; 2026 zemenpay</footer>
 </body>
-</html>		
-					
-			
-    
+</html>
