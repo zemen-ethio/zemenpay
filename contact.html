@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Live Mereja | Contact Support</title>
+    <title>zemenpay | Contact Support</title>
     <link rel="stylesheet" href="style.css">
     <style>
         .form-container { max-width: 800px; margin: 40px auto; }
@@ -59,6 +59,12 @@
             margin-top: 5px;
             display: none;
         }
+        .email-warning {
+            color: #f39c12;
+            font-size: 0.8rem;
+            margin-top: 5px;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -86,6 +92,7 @@
                         <label>Your Email</label>
                         <input type="email" name="email" id="email_addr" required placeholder="support@zemenpay.com">
                         <div class="email-error" id="email-error"></div>
+                        <div class="email-warning" id="email-warning"></div>
                     </div>
 
                     <div class="form-group">
@@ -106,23 +113,77 @@
     </main>
 
     <script>
-        // ========== EMAIL DOMAIN VALIDATION ==========
+        // ========== EMAIL VALIDATION (LOCAL PART + DOMAIN MX) ==========
         const emailInput = document.getElementById("email_addr");
         const emailError = document.getElementById("email-error");
+        const emailWarning = document.getElementById("email-warning");
 
-        // Helper: extract domain from email
-        function getDomainFromEmail(email) {
-            const parts = email.split('@');
-            return parts.length === 2 ? parts[1].toLowerCase() : null;
+        function clearEmailMessages() {
+            emailError.style.display = "none";
+            emailWarning.style.display = "none";
+            emailInput.style.borderColor = "#eee";
         }
 
-        // Helper: check if domain has MX records using Google DNS API
+        function showEmailError(message) {
+            emailError.textContent = message;
+            emailError.style.display = "block";
+            emailInput.style.borderColor = "#e74c3c";
+        }
+
+        function showEmailWarning(message) {
+            emailWarning.textContent = message;
+            emailWarning.style.display = "block";
+            emailInput.style.borderColor = "#f39c12";
+        }
+
+        // Extract local part and domain
+        function parseEmail(email) {
+            const parts = email.split('@');
+            if (parts.length !== 2) return { local: null, domain: null };
+            return { local: parts[0].toLowerCase(), domain: parts[1].toLowerCase() };
+        }
+
+        // Validate local part format
+        function validateLocalPart(local) {
+            if (!local || local.length === 0) {
+                return { valid: false, message: "Missing username before @." };
+            }
+            if (local.length < 2) {
+                return { valid: false, message: "Username is too short (at least 2 characters)." };
+            }
+            if (local.length > 64) {
+                return { valid: false, message: "Username is too long (max 64 characters)." };
+            }
+            // Cannot start or end with a dot
+            if (local.startsWith('.') || local.endsWith('.')) {
+                return { valid: false, message: "Username cannot start or end with a dot." };
+            }
+            // Cannot have consecutive dots
+            if (local.includes('..')) {
+                return { valid: false, message: "Username cannot contain consecutive dots." };
+            }
+            // Allowed characters: a-z 0-9 . _ -
+            if (!/^[a-z0-9._-]+$/.test(local)) {
+                return { valid: false, message: "Username contains invalid characters. Only letters, numbers, dots, underscores, and hyphens are allowed." };
+            }
+            // Additional sanity: if all digits, it's suspicious but not invalid
+            let warning = null;
+            if (/^\d+$/.test(local)) {
+                warning = "Username is all numbers – please double‑check it's correct.";
+            }
+            // If no dot and longer than 12 characters (possible missing dot like firstlast)
+            if (!local.includes('.') && local.length > 12 && /^[a-z]+$/.test(local)) {
+                warning = warning || "Username has no dot and is long – did you mean first.last?";
+            }
+            return { valid: true, message: null, warning: warning };
+        }
+
+        // Domain MX check (same as before)
         async function domainHasMX(domain) {
             try {
                 const url = `https://dns.google/resolve?name=${encodeURIComponent(domain)}&type=MX`;
                 const response = await fetch(url);
                 const data = await response.json();
-                // If MX records exist, the domain can receive email
                 return data.Answer && data.Answer.some(record => record.type === 15);
             } catch (err) {
                 console.warn("DNS check failed:", err);
@@ -130,101 +191,88 @@
             }
         }
 
-        // Common typos for popular domains
+        // Common domain typos
         const commonTypos = {
-            "gmil.com": "gmail.com",
-            "hotmal.com": "hotmail.com",
-            "yaho.com": "yahoo.com",
-            "outlok.com": "outlook.com",
-            "protonmai.com": "protonmail.com",
-            "gmai.com": "gmail.com",
-            "gmail.co": "gmail.com",
-            "hotmial.com": "hotmail.com",
-            "yahooo.com": "yahoo.com",
-            "yhaoo.com": "yahoo.com"
+            "gmil.com": "gmail.com", "hotmal.com": "hotmail.com", "yaho.com": "yahoo.com",
+            "outlok.com": "outlook.com", "protonmai.com": "protonmail.com", "gmai.com": "gmail.com",
+            "gmail.co": "gmail.com", "hotmial.com": "hotmail.com", "yahooo.com": "yahoo.com"
         };
 
-        // Show error message
-        function showEmailError(message) {
-            emailError.textContent = message;
-            emailError.style.display = "block";
-            emailInput.style.borderColor = "#e74c3c";
-        }
-
-        function hideEmailError() {
-            emailError.style.display = "none";
-            emailInput.style.borderColor = "#eee";
-        }
-
         // Main validation function
-        async function validateEmailDomain(email) {
-            hideEmailError();
-            
+        async function validateFullEmail(email) {
+            clearEmailMessages();
             if (!email || email.trim() === "") {
                 showEmailError("Email address is required.");
                 return false;
             }
 
-            const domain = getDomainFromEmail(email);
-            if (!domain) {
+            const { local, domain } = parseEmail(email);
+            if (!local || !domain) {
                 showEmailError("Please include an '@' symbol and a valid domain (e.g., name@example.com).");
                 return false;
             }
 
-            // Check for known typos
+            // 1. Validate local part
+            const localCheck = validateLocalPart(local);
+            if (!localCheck.valid) {
+                showEmailError(localCheck.message);
+                return false;
+            }
+            if (localCheck.warning) {
+                showEmailWarning(localCheck.warning);
+                // Warning does NOT block submission – user can still proceed
+            }
+
+            // 2. Check domain typos
             if (commonTypos[domain]) {
                 showEmailError(`Did you mean @${commonTypos[domain]}?`);
                 return false;
             }
 
-            // Basic domain format: must contain at least one dot and a valid TLD (e.g., .com, .org)
+            // 3. Basic domain format
             if (!domain.includes('.') || domain.split('.').pop().length < 2) {
                 showEmailError("Please enter a complete domain (e.g., @example.com).");
                 return false;
             }
 
-            // Show a temporary "checking" message (optional)
-            emailError.textContent = "Checking domain...";
-            emailError.style.display = "block";
-            emailError.style.color = "#0F52BA";
-
-            // Check MX records
+            // 4. MX record check (silent while checking)
+            emailWarning.textContent = "Checking domain...";
+            emailWarning.style.display = "block";
             const hasMX = await domainHasMX(domain);
             if (!hasMX) {
                 showEmailError("This domain does not appear to accept emails. Please use a working email address.");
+                emailWarning.style.display = "none";
                 return false;
             }
 
-            // Success: clear error
-            hideEmailError();
+            // All good
+            clearEmailMessages();
             return true;
         }
 
-        // Real-time validation when user leaves the email field (blur)
+        // Real-time validation on blur
         emailInput.addEventListener("blur", async function() {
-            const email = emailInput.value.trim();
-            if (email === "") {
+            if (emailInput.value.trim() === "") {
                 showEmailError("Email address is required.");
                 return;
             }
-            await validateEmailDomain(email);
+            await validateFullEmail(emailInput.value.trim());
         });
 
-        // Also re-validate on input (clear error when user starts typing)
+        // Clear errors when user starts typing
         emailInput.addEventListener("input", function() {
-            hideEmailError();
+            clearEmailMessages();
         });
 
-        // ========== FORM SUBMISSION WITH EMAIL CHECK ==========
+        // ========== FORM SUBMISSION ==========
         const form = document.getElementById("support-form-element");
         const statusMsg = document.getElementById("status-msg");
 
         form.addEventListener("submit", async function(event) {
             event.preventDefault();
             
-            // First, validate the email domain again
             const email = emailInput.value.trim();
-            const isEmailValid = await validateEmailDomain(email);
+            const isEmailValid = await validateFullEmail(email);
             if (!isEmailValid) {
                 statusMsg.style.display = "block";
                 statusMsg.style.color = "red";
@@ -232,7 +280,13 @@
                 return;
             }
 
-            // Proceed with submission
+            // If there's only a warning (not an error), we still allow submission
+            // but we may ask for confirmation (optional)
+            if (emailWarning.style.display === "block") {
+                const proceed = confirm("Your email address has a possible typo. Continue anyway?");
+                if (!proceed) return;
+            }
+
             statusMsg.style.display = "block";
             statusMsg.style.color = "#0F52BA";
             statusMsg.innerHTML = "Processing Ticket...";
